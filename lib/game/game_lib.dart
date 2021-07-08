@@ -11,7 +11,7 @@ class Game {
 }
 
 abstract class GameView extends StatelessWidget{
-  String title;
+  final String title;
   GameView(this.title);
 
   Widget getStartPageContent(BuildContext context);
@@ -58,8 +58,6 @@ abstract class GameEngine extends ChangeNotifier {
 
   void stateChanged(GameState oldState, GameState newState);
 
-  void updatePhysicsEngine(int tickCounter);
-
   int get tickCounter => _tickCounter;
 
   GameState get gameState => _gameState;
@@ -96,6 +94,31 @@ abstract class GameEngine extends ChangeNotifier {
   void _processTick(dynamic notUsed) {
     ++_tickCounter;
     updatePhysicsEngine(_tickCounter);
+  }
+}
+class SizeProviderWidget extends StatefulWidget {
+  final Widget child;
+  final Function(Size?) onChildSize;
+
+  const SizeProviderWidget(
+      {Key? key, required this.onChildSize, required this.child})
+      : super(key: key);
+  @override
+  _SizeProviderWidgetState createState() => _SizeProviderWidgetState();
+}
+
+class _SizeProviderWidgetState extends State<SizeProviderWidget> {
+  @override
+  void initState() {
+    super.initState();
+    WidgetsBinding.instance?.addPostFrameCallback((timeStamp) {
+      widget.onChildSize(context.size);
+    });
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return widget.child;
   }
 }
 

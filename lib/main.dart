@@ -4,7 +4,8 @@ import 'game/game_lib.dart';
 import 'minigame.dart';
 
 void main() {
-  Game game = Game(MiniGameView('Mini Game'), MiniGameEngine());
+  var gameEngine= MiniGameEngine();
+  Game game = Game(MiniGameView('Mini Game', gameEngine), MiniGameEngine());
   runApp(MyApp(game));
 }
 
@@ -19,8 +20,17 @@ class MyApp extends StatelessWidget {
         child: MaterialApp(
             title: game.gameView.title,
             theme: ThemeData(
-              primarySwatch: Colors.green,
-              scaffoldBackgroundColor: Colors.grey,
+              brightness: Brightness.dark,
+              primaryColor: Colors.blue[900],
+              primarySwatch: Colors.yellow,
+              scaffoldBackgroundColor: Colors.blue[900],
+
+              fontFamily: 'Robotic',
+
+              textTheme: TextTheme(
+                /** Font-Color **/
+              ),
+
               visualDensity: VisualDensity.adaptivePlatformDensity,
             ),
             home: game.gameView));
